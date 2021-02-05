@@ -5,8 +5,8 @@
     </nav-bar>
     <my-swiper :banners="banners"></my-swiper>
     <home-recommend :recommends="recommends"></home-recommend>
-    <tab-control :titles="titles"></tab-control>
-    <goods-list></goods-list>
+    <tab-control :titles="titles" @controlItemClick = 'controlItemHandle'></tab-control>
+    <goods-list :goods="goodsList[currentIndex]"></goods-list>
   </div>
 </template>
 
@@ -24,14 +24,14 @@ export default {
     MySwiper,
     HomeRecommend,
     TabControl,
-    GoodsList,
+    GoodsList
   },
   data() {
     return {
       banners: [],
       recommends: [],
-      pops: {},
-      news: {},
+      goodsList:[],
+      currentIndex:0,
       swiperOptions: {
         pagination: {
           el: ".swiper-pagination",
@@ -51,7 +51,6 @@ export default {
         .then((res) => {
           this.banners = res.data.data.banner.list;
           this.recommends = res.data.data.recommend.list;
-          console.log(res.data.data);
         })
         .catch((err) => {
           console.log(err);
@@ -61,17 +60,20 @@ export default {
       myRequest(
         "http://www.mei.com/appapi/home/eventForH5?params=%7B%7D&timestamp=1612443743437&summary=61a1c82b4d353892a708072a8a9dca23&platform_code=H5"
       ).then((res) => {
-        console.log(res.data.lists);
-        this.pops = res.data.lists[0];
-        this.news = res.data.lists[0];
+       this.goodsList = res.data.lists;
+       console.log(this.goodsList)
       });
     },
+    controlItemHandle(e){
+     this.currentIndex = e;
+    }
   },
 };
 </script>
 <style lang="scss" scoped>
 .home {
   padding-top: 44px;
+  padding-bottom: 50px;
   .home-nav {
     background: palevioletred;
     position: fixed;
