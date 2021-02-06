@@ -33,16 +33,12 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      console.log('加载完成')
       this.scroll = new BScroll('.wrapper',{
         probeType:3,
         pullUpLoad:true
       });
       this.scroll.on('scroll',(pos)=>{
-        // console.log(pos.y)
-      });
-      this.scroll.on('pullingUp',(res)=>{
-        console.log('上拉加载更多')
+        console.log(pos.y)
       })
     })
   },
